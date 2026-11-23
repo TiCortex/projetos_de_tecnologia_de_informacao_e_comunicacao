@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGEH | Cuidar começa com organização</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<section id="login-screen" class="login-screen">
+ <div class="login-brand">
+  <div class="login-logo"><div class="login-mark">+</div><div><strong>SIGEH</strong><small>SISTEMA DE GESTÃO HOSPITALAR</small></div></div>
+  <div class="login-message"><div class="eyebrow">Tecnologia a serviço do cuidado</div><h1>Cuidar começa com organização.</h1><p>Uma gestão mais simples, integrada e acolhedora para conectar pessoas, profissionais e atendimentos em um só lugar.</p><div class="login-points"><span>Gestão de pacientes</span><span>Agenda médica</span><span>Informação organizada</span></div></div>
+  <div class="login-foot">SIGEH • MVP acadêmico • Versão 1.1</div>
+ </div>
+ <div class="login-side"><form class="login-card" id="login-form"><div style="font-size:11px;color:#087f8c;font-weight:800;letter-spacing:1.5px;margin-bottom:13px">ÁREA RESTRITA</div><h2>Bem-vindo(a)!</h2><p>Entre com seus dados para acessar o painel administrativo.</p>
+  <div class="field"><label for="login-email">E-mail</label><input id="login-email" type="email" placeholder="admin@sigeh.com" autocomplete="username" required></div>
+  <div class="field"><label for="login-password">Senha</label><input id="login-password" type="password" placeholder="Digite sua senha" autocomplete="current-password" required></div>
+  <div id="login-error" class="login-error" role="alert"></div><button class="btn" type="submit">Entrar no sistema　→</button>
+  <div class="login-hint"><b>Acesso para demonstração</b><br>E-mail: admin@sigeh.com<br>Senha: 123456</div>
+ </form></div>
+</section>
+<div class="app" id="app-shell" style="display:none">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">+</div><div><strong>SIGEH</strong><small>GESTÃO HOSPITALAR</small></div></div>
+ <div class="nav-label">Menu principal</div>
+ <nav class="nav">
+  <button class="active" data-page="dashboard"><span class="ico">▦</span><span class="nav-text">Dashboard</span></button>
+  <button data-page="pacientes"><span class="ico">♙</span><span class="nav-text">Pacientes</span></button>
+  <button data-page="medicos"><span class="ico">⚕</span><span class="nav-text">Médicos</span></button>
+  <button data-page="agendamentos"><span class="ico">▣</span><span class="nav-text">Agendamentos</span></button>
+ </nav>
+ <div class="sidebar-foot">Sistema demonstrativo<br>Versão 1.0 • MVP acadêmico</div>
+</aside>
+<main class="main">
+ <header class="topbar"><div class="crumb">SIGEH <span style="color:#c4ccd7"> / </span> <span id="crumb">Dashboard</span></div><div class="user"><div class="avatar">AD</div><div><b>Administrador</b><div class="muted">Acesso demonstrativo</div></div><button class="btn secondary small" onclick="logout()">Sair</button></div></header>
+ <section class="content">
+  <div id="page-dashboard" class="page">
+   <div class="page-head"><div><h1>Visão geral</h1><p>Acompanhe os principais indicadores da gestão hospitalar.</p></div><button class="btn" onclick="openAppointment()">＋ Novo agendamento</button></div>
+   <div class="stats">
+    <div class="stat"><div class="stat-top">Pacientes cadastrados <span class="stat-icon">♙</span></div><strong id="stat-patients">0</strong><small>Cadastros no sistema</small></div>
+    <div class="stat"><div class="stat-top">Médicos ativos <span class="stat-icon">⚕</span></div><strong id="stat-doctors">0</strong><small>Profissionais cadastrados</small></div>
+    <div class="stat"><div class="stat-top">Consultas agendadas <span class="stat-icon">▣</span></div><strong id="stat-appointments">0</strong><small>Total não cancelado</small></div>
+    <div class="stat"><div class="stat-top">Pendentes <span class="stat-icon">◷</span></div><strong id="stat-pending">0</strong><small>Aguardando atendimento</small></div>
+   </div>
+   <div class="grid-two">
+    <div class="panel"><div class="panel-head"><h2>Agendamentos recentes</h2><button class="btn secondary small" onclick="showPage('agendamentos')">Ver todos</button></div><div class="table-wrap"><table><thead><tr><th>Paciente</th><th>Médico</th><th>Data e hora</th><th>Status</th></tr></thead><tbody id="recent-table"></tbody></table></div></div>
+    <div class="panel"><div class="panel-head"><h2>Consultas por status</h2><span class="muted">Visão geral</span></div><div class="bar-list" id="status-bars"></div></div>
+   </div>
+   <div class="panel"><div class="panel-head"><h2>Acesso rápido</h2><span class="muted">Principais operações</span></div><div class="quick">
+    <button onclick="openPatient()"><span>♙</span><b>Cadastrar paciente</b></button>
+    <button onclick="openDoctor()"><span>⚕</span><b>Cadastrar médico</b></button>
+    <button onclick="openAppointment()"><span>▣</span><b>Agendar consulta</b></button>
+   </div></div>
+   <p class="footer-note">Os indicadores são calculados com base nos registros armazenados neste navegador. Os dados iniciais são fictícios e podem ser alterados ou excluídos.</p>
+  </div>
+  <div id="page-pacientes" class="page hidden">
+   <div class="page-head"><div><h1>Pacientes</h1><p>Cadastre e gerencie os pacientes da instituição.</p></div><button class="btn" onclick="openPatient()">＋ Novo paciente</button></div>
+   <div class="panel"><div class="search-row"><div class="field"><label>Pesquisar paciente</label><input id="patient-search" placeholder="Nome, CPF ou telefone..." oninput="renderPatients()"></div></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>CPF</th><th>Data de nascimento</th><th>Telefone</th><th>Ações</th></tr></thead><tbody id="patients-table"></tbody></table></div></div>
+  </div>
+  <div id="page-medicos" class="page hidden">
+   <div class="page-head"><div><h1>Médicos</h1><p>Gerencie os profissionais e suas especialidades.</p></div><button class="btn" onclick="openDoctor()">＋ Novo médico</button></div>
+   <div class="panel"><div class="search-row"><div class="field"><label>Pesquisar médico</label><input id="doctor-search" placeholder="Nome, CRM ou especialidade..." oninput="renderDoctors()"></div></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>CRM</th><th>Especialidade</th><th>Telefone</th><th>Ações</th></tr></thead><tbody id="doctors-table"></tbody></table></div></div>
+  </div>
+  <div id="page-agendamentos" class="page hidden">
+   <div class="page-head"><div><h1>Agendamentos</h1><p>Organize consultas, horários e situação dos atendimentos.</p></div><button class="btn" onclick="openAppointment()">＋ Novo agendamento</button></div>
+   <div class="panel"><div class="search-row"><div class="field"><label>Pesquisar</label><input id="appointment-search" placeholder="Paciente ou médico..." oninput="renderAppointments()"></div><div class="field" style="max-width:190px"><label>Filtrar por status</label><select id="status-filter" onchange="renderAppointments()"><option value="">Todos</option><option>Confirmada</option><option>Pendente</option><option>Realizada</option><option>Cancelada</option></select></div></div><div class="table-wrap"><table><thead><tr><th>Paciente</th><th>Médico</th><th>Especialidade</th><th>Data e hora</th><th>Status</th><th>Ações</th></tr></thead><tbody id="appointments-table"></tbody></table></div></div>
+  </div>
+ </section>
+</main>
+</div>
+<div id="modal-root"></div><div id="toast-root"></div>
+<script src="script.js" defer></script>
+</body>
+</html>
